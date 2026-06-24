@@ -1,4 +1,4 @@
-# fill-grade
+# OSIS fill grades
 
 Fill the **Score** column of an official UCLouvain grade file (`session_*.xlsx`)
 from your own spreadsheet of points, matching students **by email**.
