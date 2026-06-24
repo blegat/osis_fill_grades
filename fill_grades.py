@@ -245,6 +245,7 @@ def run(target_path, custom_path, output_path=None, sheet=None,
     twb.save(out_path)
     report["duplicates"] = sorted(set(duplicates))
     report["custom_info"] = info
+    report["mapping"] = mapping
     report["output"] = out_path
     return report
 
@@ -310,10 +311,7 @@ def main(argv=None):
     print(f"\nCustom: sheet '{info['sheet']}', emails in column "
           f"{get_column_letter(info['email_col'])}, points in column "
           f"{get_column_letter(info['score_col'])}.")
-    # Re-read the mapping only to annotate the 'absent from target' warning.
-    mapping, _, _ = read_custom(
-        Path(args.custom).expanduser(), args.sheet, args.email_col, args.score_col)
-    print_report(report, mapping)
+    print_report(report, report["mapping"])
 
 
 if __name__ == "__main__":

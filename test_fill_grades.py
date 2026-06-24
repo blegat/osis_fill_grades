@@ -253,6 +253,29 @@ def test_run_default_output_name(tmp_path):
     assert report["output"].exists()
 
 
+def test_run_prompts_only_once(tmp_path):
+    # Multi-sheet custom + ambiguous points column would each trigger a prompt.
+    # The chooser must be invoked at most once per decision, never twice (the
+    # report carries the mapping so main() does not re-read the custom file).
+    target = make_target(tmp_path / "session.xlsx",
+                         [("a@student.uclouvain.be", None)])
+    custom = make_custom(
+        tmp_path / "custom.xlsx", None, header=("Email", "Points"),
+        sheets={"first": [("a@student.uclouvain.be", 16)],
+                "second": [("b@student.uclouvain.be", 2)]})
+    calls = []
+
+    def chooser(prompt, options):
+        calls.append(prompt)
+        return 0  # always the first option
+
+    report = fg.run(target, custom, output_path=tmp_path / "out.xlsx",
+                    chooser=chooser)
+    # Exactly one prompt: the sheet choice (single points column -> no prompt).
+    assert calls == ["Which sheet to use?"]
+    assert report["mapping"] == {"a@student.uclouvain.be": 16}
+
+
 def test_run_missing_target(tmp_path):
     custom = make_custom(tmp_path / "custom.xlsx",
                          [("Alice", "a@student.uclouvain.be", 16)])
