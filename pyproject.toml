@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fill-grade"
+version = "0.1.0"
+description = "Fill the Score column of an official UCLouvain xlsx from a custom file, with sanity warnings."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "openpyxl>=3.1",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0",
+]
+
+[project.scripts]
+fill-grade = "fill_grades:main"
+
+[tool.setuptools]
+py-modules = ["fill_grades"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
