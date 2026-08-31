@@ -215,6 +215,24 @@ def test_fill_target_no_email_raises(tmp_path):
         fg.fill_target(ws, {}, email_col=7, score_col=8)
 
 
+def test_print_report_reassures_when_all_target_emails_match(capsys, tmp_path):
+    report = {
+        "written": 2,
+        "output": tmp_path / "out.xlsx",
+        "missing_in_custom": [],
+        "missing_in_target": ["extra@student.uclouvain.be"],
+        "duplicates": [],
+        "decimal_warn": [],
+    }
+
+    fg.print_report(report)
+
+    output = capsys.readouterr().out
+    assert ("All emails in the target found a corresponding point "
+            "in the custom file.") in output
+    assert "1 email(s) in the custom file ABSENT from the target" in output
+
+
 # --------------------------------------------------------------------------- #
 # End to end
 # --------------------------------------------------------------------------- #

@@ -261,6 +261,9 @@ def print_report(report, mapping=None):
               f"point in the custom file (Score left empty):")
         for e in report["missing_in_custom"]:
             print(f"    - {e}")
+    else:
+        print("\n✅  All emails in the target found a corresponding point "
+              "in the custom file.")
 
     if report["missing_in_target"]:
         print(f"\n⚠️  {len(report['missing_in_target'])} email(s) in the custom file ABSENT "
